@@ -1,13 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.UIElements;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public List<CellClass> Cells = new List<CellClass>();
-    int CellsInSyringe = 100;
+    public int CellsInSyringe = 100;
     public int Syringes = 0;
     public float TotalCells = 1;
     public float GameTickerInterval = (float)0.5;
@@ -15,9 +10,9 @@ public class GameManager : MonoBehaviour
     public float CellStrength = (float)0.1;
     public float HumansInfected = 0;
     public float CureProgress = 0;
+    public float CellsInMicroscope = 1;
+    public bool DestroyCells = false;
 
-    bool IsDestroyingCells = false;
-    float CellsInMicroscope = 1;
     float GameTickerProgress = 0;
 
     public static GameManager instance;
@@ -49,6 +44,9 @@ public class GameManager : MonoBehaviour
     //        //yield return new WaitForSeconds(GameTickerInterval);
     //    }
     //}
+    //Save data
+    //PlayerPrefs.SetInt("Cells", 10);
+    //PlayerPrefs.GetInt("Cells",0);
 
     private void Update()
     {
@@ -57,27 +55,6 @@ public class GameManager : MonoBehaviour
         if (GameTickerProgress >= GameTickerInterval)
         {
             Tick();
-        }
-        //Moves cells offscreen to be destroyed
-        if (IsDestroyingCells)
-        {
-            if (Cells.Count <= 1)
-            {
-                IsDestroyingCells = false;
-            }
-            for (int c = Cells.Count - 1; c > 0; c--)
-            {
-                if (Cells[c] != null)
-                {
-                    Cells[c].transform.position += new Vector3((float)-0.08, 0, 0);
-                    if (Cells[c].transform.position.x < -12)
-                    {
-                        Destroy(Cells[c].gameObject);
-                        Cells.RemoveAt(c);
-                    }
-                }
-            }
-            Cells[0].transform.position += new Vector3(0, 0, 0) - Cells[0].transform.position/50;
         }
         // Updates total number of cells
         TotalCells = Syringes * CellsInSyringe + CellsInMicroscope;
@@ -93,42 +70,17 @@ public class GameManager : MonoBehaviour
     {
         GameTickerProgress = 0;
         CellsInMicroscope += CellsInMicroscope * DuplicationRate;
-        int CellsToMultiply = (int)System.Math.Floor(CellsInMicroscope) - Cells.Count;
-        Duplicate(CellsToMultiply);
+        if (CellsInMicroscope > CellsInSyringe + 1)
+        {
+            DestroyCells = true;
+            Syringes++;
+            CellsInMicroscope = 1;
+        }
     }
 
     public void Click()
     {
         Tick();
-    }
-
-    public void Duplicate(int Amount)
-    {
-        if (Amount > 0 && !IsDestroyingCells)
-        {
-            try
-            {
-                for (int i = 0; i < Amount; i++)
-                {
-                    CellClass temp = Cells[Random.Range(0, Cells.Count)];
-                    Instantiate(temp.gameObject, (Vector2)temp.transform.position +
-                        new Vector2(Random.Range((float)-0.1, (float)0.2), Random.Range((float)-0.1, (float)0.2)), Quaternion.identity);
-                }
-            }
-            catch{}
-            if (CellsInMicroscope > CellsInSyringe + 1)
-            {
-                DestroyCells();
-                Syringes++;
-                CellsInMicroscope = 1;
-            }
-        }
-
-    }
-
-    public void DestroyCells()
-    {
-        IsDestroyingCells = true;
     }
 
     public void InfectHuman()
