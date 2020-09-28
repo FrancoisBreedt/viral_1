@@ -7,14 +7,17 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     public List<CellClass> Cells = new List<CellClass>();
+    int CellsInSyringe = 100;
+    public int Syringes = 0;
+    public float TotalCells = 1;
+    public float GameTickerInterval = (float)0.5;
+    public float DuplicationRate = (float)0.01;
+    public float CellStrength = (float)0.1;
+    public float HumansInfected = 0;
+    public float CureProgress = 0;
 
     bool IsDestroyingCells = false;
-    int CellsInSyringe = 100;
-    int Syringes = 0;
-    float TotalCells = 1;
     float CellsInMicroscope = 1;
-    float DuplicationRate = (float)0.01;
-    float GameTickerInterval = (float)0.5;
     float GameTickerProgress = 0;
 
     public static GameManager instance;
@@ -30,6 +33,22 @@ public class GameManager : MonoBehaviour
             Initialize();
         }
     }
+
+    //Coroutine tmp;
+    //private void Start()
+    //{
+    //     tmp = StartCoroutine(Ticks());
+    //}
+    //IEnumerator Ticks()
+    //{
+    //    while(true)
+    //    {
+    //        Debug.Log("Tick");
+    //        Tick();
+    //        yield return null;
+    //        //yield return new WaitForSeconds(GameTickerInterval);
+    //    }
+    //}
 
     private void Update()
     {
@@ -87,16 +106,20 @@ public class GameManager : MonoBehaviour
     {
         if (Amount > 0 && !IsDestroyingCells)
         {
-            for (int i = 0; i < Amount; i++)
+            try
             {
-                CellClass temp = Cells[Random.Range(0, Cells.Count)];
-                Instantiate(temp.gameObject, (Vector2)temp.transform.position +
-                    new Vector2(Random.Range((float)-0.1, (float)0.2), Random.Range((float)-0.1, (float)0.2)), Quaternion.identity);
+                for (int i = 0; i < Amount; i++)
+                {
+                    CellClass temp = Cells[Random.Range(0, Cells.Count)];
+                    Instantiate(temp.gameObject, (Vector2)temp.transform.position +
+                        new Vector2(Random.Range((float)-0.1, (float)0.2), Random.Range((float)-0.1, (float)0.2)), Quaternion.identity);
+                }
             }
-            if (Cells.Count > CellsInSyringe)
+            catch{}
+            if (CellsInMicroscope > CellsInSyringe + 1)
             {
                 DestroyCells();
-                Syringes += 1;
+                Syringes++;
                 CellsInMicroscope = 1;
             }
         }
@@ -106,6 +129,18 @@ public class GameManager : MonoBehaviour
     public void DestroyCells()
     {
         IsDestroyingCells = true;
+    }
+
+    public void InfectHuman()
+    {
+        if (Syringes >= 1)
+        {
+            if (Random.Range(0, 100) < CellStrength)
+            {
+                HumansInfected++;
+            }
+            Syringes--;
+        }  
     }
 
 }
