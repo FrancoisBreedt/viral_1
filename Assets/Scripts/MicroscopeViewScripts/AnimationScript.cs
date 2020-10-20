@@ -52,6 +52,11 @@ public class AnimationScript : MonoBehaviour
         }
         int CellsToMultiply = (int)System.Math.Floor(GameManager.instance.CellsInMicroscope) - Cells.Count;
         Duplicate(CellsToMultiply);
+
+        for (int i = 0; i < Cells.Count; i++)
+        {
+            Cells[i].GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, GameManager.instance.CellStrength);
+        }
     }
 
     public void Duplicate(int Amount)

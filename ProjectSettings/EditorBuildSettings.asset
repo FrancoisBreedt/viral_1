@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Microscope.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
     path: Assets/Scenes/Start.unity
     guid: e70aef65fbd54884c974cb012af3211a
+  - enabled: 1
+    path: Assets/Scenes/Microscope.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 1fd67b85a2f1ff44d9925fe7a6e29051

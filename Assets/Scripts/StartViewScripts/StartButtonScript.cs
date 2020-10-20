@@ -4,39 +4,27 @@ using UnityEngine.UI;
 
 public class StartButtonScript : MonoBehaviour
 {
+    [SerializeField] AudioSource clickSound;
 
-    private float FlickerTime = (float)0.5;
-    private float FlickerTrigger = 0;
-    private string Text = "CLICK TO START GAME";
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    float loopTime = 3;
+    float loopProgress = 0;
 
     // Update is called once per frame
     void Update()
     {
-        FlickerTrigger += Time.deltaTime;
-        if (FlickerTrigger >= FlickerTime)
+        if (Input.anyKey || Input.touchCount > 0)
         {
-            FlickerTrigger = 0;
-            if (Text == "CLICK TO START GAME")
-            {
-                Text = "CLICK TO START GAME_";
-            } 
-            else
-            {
-                Text = "CLICK TO START GAME";
-            }
-            GameObject.Find("btnStart").GetComponentInChildren<Text>().text = Text;
+            clickSound.Play();
+            SceneManager.LoadScene("Main");
         }
-    }
-
-    public void OnClick()
-    {
-        SceneManager.LoadScene("Main");
+        loopProgress += Time.deltaTime;
+        if (loopProgress >= loopTime)
+        {
+            loopProgress = 0;
+        }
+        Color c = GetComponent<Image>().color;
+        c.a = (Mathf.Sin(loopProgress / loopTime * Mathf.PI * 2) + 7) * 0.125f;
+        GetComponent<Image>().color = c;
     }
 
 }

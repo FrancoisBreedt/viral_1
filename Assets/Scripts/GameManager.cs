@@ -2,16 +2,18 @@
 
 public class GameManager : MonoBehaviour
 {
-    public int CellsInSyringe = 100;
-    public int Syringes = 0;
-    public float TotalCells = 1;
-    public float GameTickerInterval = (float)0.5;
-    public float DuplicationRate = (float)0.01;
-    public float CellStrength = (float)0.1;
-    public float HumansInfected = 0;
-    public float CureProgress = 0;
-    public float CellsInMicroscope = 1;
-    public bool DestroyCells = false;
+    public int CellsInSyringe;
+    public int Syringes;
+    public float TotalCells;
+    public int TotalTicks;
+    public float GameTickerInterval;
+    public float DuplicationRate;
+    public float CellStrength;
+    public float HumansInfected;
+    public float CureProgress;
+    public float CellsInMicroscope;
+    public bool DestroyCells;
+    public bool PlayerDead;
 
     float GameTickerProgress = 0;
 
@@ -29,21 +31,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //Coroutine tmp;
-    //private void Start()
-    //{
-    //     tmp = StartCoroutine(Ticks());
-    //}
-    //IEnumerator Ticks()
-    //{
-    //    while(true)
-    //    {
-    //        Debug.Log("Tick");
-    //        Tick();
-    //        yield return null;
-    //        //yield return new WaitForSeconds(GameTickerInterval);
-    //    }
-    //}
     //Save data
     //PlayerPrefs.SetInt("Cells", 10);
     //PlayerPrefs.GetInt("Cells",0);
@@ -69,6 +56,7 @@ public class GameManager : MonoBehaviour
     public void Tick()
     {
         GameTickerProgress = 0;
+        TotalTicks++;
         CellsInMicroscope += CellsInMicroscope * DuplicationRate;
         if (CellsInMicroscope > CellsInSyringe + 1)
         {
@@ -78,16 +66,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void Click()
-    {
-        Tick();
-    }
-
     public void InfectHuman()
     {
         if (Syringes >= 1)
         {
-            if (Random.Range(0, 100) < CellStrength)
+            if (Random.Range(0, 10) < CellStrength)
             {
                 HumansInfected++;
             }
