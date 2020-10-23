@@ -9,7 +9,10 @@ public class InfectPerson : MonoBehaviour
 
     void Update()
     {
-        GetComponentInChildren<Text>().color = GameManager.instance.Syringes > 0 ? Color.green : Color.red;
+        float a = GetComponentInChildren<Text>().color.a;
+        Color c = GameManager.instance.Syringes > 0 ? Color.green : Color.red;
+        c.a = a;
+        GetComponentInChildren<Text>().color = c;
     }
 
     public void OnClick()

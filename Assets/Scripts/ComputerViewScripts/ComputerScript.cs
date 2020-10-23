@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ComputerScript : MonoBehaviour
 {
@@ -33,4 +34,11 @@ public class ComputerScript : MonoBehaviour
         clickSound.Play();
         Navigate(0);
     }
+
+    public void Restart()
+    {
+        clickSound.Play();
+        GameManager.instance.Restart();
+    }
+
 }

@@ -7,18 +7,12 @@ public class warningScript : MonoBehaviour
 {
     [SerializeField] AudioSource warningBeep;
 
-    float dangerLevel = 0;
-    float blinkTime = 0.5f;
-    float blinkProgress = 0;
-    float beepTime = 10;
-    float beepProgress = 10;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private float dangerLevel = 0;
+    private float blinkTime = 0.5f;
+    private float blinkProgress = 0;
+    private float beepTime = 10;
+    private float beepProgress = 10;
 
-    // Update is called once per frame
     void Update()
     {
         dangerLevel = (GameManager.instance.DuplicationRate / GameManager.instance.GameTickerInterval) - 1;
@@ -39,6 +33,11 @@ public class warningScript : MonoBehaviour
                 beepProgress = 0;
                 warningBeep.Play();
             }
+        }
+        if (dangerLevel > Random.Range(1, 2))
+        {
+            GameManager.instance.PlayerDead = true;
+            GameManager.instance.DeathType = "Virus";
         }
     }
 }

@@ -241,7 +241,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 573b77ff22470354ca0521bfe2bc667e, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.753
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -474,7 +474,6 @@ MonoBehaviour:
   CellsInSyringe: 100
   Syringes: 0
   TotalCells: 1
-  TotalTicks: 0
   GameTickerInterval: 0.5
   DuplicationRate: 0.01
   CellStrength: 0.1
@@ -483,6 +482,7 @@ MonoBehaviour:
   CellsInMicroscope: 1
   DestroyCells: 0
   PlayerDead: 0
+  DeathType: 
 --- !u!4 &240701402
 Transform:
   m_ObjectHideFlags: 0
